@@ -168,6 +168,7 @@ header nav div.settings ul {
  .sidebar__project-delete {
 	 margin-left: auto;
 	 display: none;
+	 padding: 10px;
 }
 .sidebar__project-delete svg {
 	color: #cacaca;
@@ -272,13 +273,12 @@ header nav div.settings ul {
 }
 /* Show Confirm Delete ============================================ */
  .project-delete-modal {
-	 position: relative;
-	 z-index: 1000;
+	 position: absolute;
+	 left: 15%;
 }
  .project-delete-modal__inner {
 	 -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
 	 box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
-	 /* position: absolute; */
 	 width: 100%;
 	 z-index: 1000;
 	 top: 85px;
@@ -289,6 +289,11 @@ header nav div.settings ul {
 	 top: 10px;
 	 right: 0;
 	 background-color: white;
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+	 text-align: center;
 }
  .project-delete-modal__inner p {
 	 margin-top: 5px;

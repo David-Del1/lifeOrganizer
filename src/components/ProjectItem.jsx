@@ -25,9 +25,16 @@ export default function ProjectItem({ project }) {
     <>
       <span className="sidebar__dot">•</span>
       <span className="sidebar__project-name">{project.name}</span>
-      <span className="sidebar__project-delete"
-      data-testid="delete-project"
+      <span 
+        className="sidebar__project-delete"
+        data-testid="delete-project"
         onClick={() => setShowConfirm(!showConfirm)}
+        onKeyDown={e => {
+          if (e.key === 'Enter') setShowConfirm(!showConfirm)
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label="Confirm delete of project"
       >
         <FaTrashAlt />
         {showConfirm && (
