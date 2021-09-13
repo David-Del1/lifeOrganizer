@@ -5,8 +5,6 @@ import Checkbox from './Checkbox';
 function Tasks() {
   const { tasks } = useTasks('1');
 
-  console.log(tasks);
-
   let projectName = '';
 
   return (
