@@ -12,7 +12,8 @@ function Sidebar() {
   return (
     <div className="sidebar" data-testid="sidebar">
       <ul className="sidebar__generic">
-        <li data-testid="inbox"
+        <li
+          data-testid="inbox"
           className={active === 'inbox' ? 'active' : undefined}
         >
           <div
@@ -22,7 +23,7 @@ function Sidebar() {
             role="button"
             onClick={() => {
               setActive('inbox');
-              setSelectedProject('INBOX')
+              setSelectedProject('INBOX');
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -31,38 +32,40 @@ function Sidebar() {
               }
             }}
           >
-
             <span>
               <FaInbox />
             </span>
             <span>Inbox</span>
           </div>
         </li>
-        <li data-testid="today"
-          className={active === 'today' ? 'active' : undefined}>
-            <div
-              data-testid="today-action"
-              aria-label="Show today's tasks"
-              tabIndex={0}
-              role="button"
-              onClick={() => {
+        <li
+          data-testid="today"
+          className={active === 'today' ? 'active' : undefined}
+        >
+          <div
+            data-testid="today-action"
+            aria-label="Show today's tasks"
+            tabIndex={0}
+            role="button"
+            onClick={() => {
+              setActive('today');
+              setSelectedProject('TODAY');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
                 setActive('today');
                 setSelectedProject('TODAY');
-              }}
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  setActive('today');
-                  setSelectedProject('TODAY');
-                }
-              }}
-            >
+              }
+            }}
+          >
             <span>
               <FaRegCalendar />
             </span>
             <span>Today</span>
-            </div>
+          </div>
         </li>
-        <li data-testid="next_7"
+        <li
+          data-testid="next_7"
           className={active === 'next_7' ? 'active' : undefined}
         >
           <div
@@ -72,10 +75,10 @@ function Sidebar() {
             role="button"
             onClick={() => {
               setActive('next_7');
-              setSelectedProject('NEXT_7')
+              setSelectedProject('NEXT_7');
             }}
-            onKeyDown={e => {
-              if(e.key === 'Enter') {
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
                 setActive('next_7');
                 setSelectedProject('NEXT_7');
               }
@@ -84,24 +87,29 @@ function Sidebar() {
             <span>
               <FaRegCalendarAlt />
             </span>
-            <span>Upcoming Week</span>
+            <span>Next 7 days</span>
           </div>
-        </li> 
+        </li>
       </ul>
-
-      <div 
+      <div
         className="sidebar__middle"
+        aria-label="Show/hide projects"
         onClick={() => setShowProjects(!showProjects)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') setShowProjects(!showProjects);
+        }}
+        role="button"
+        tabIndex={0}
       >
         <span>
-          <FaChevronDown className={!showProjects ? 'hidden-projects' : undefined} />
+          <FaChevronDown
+            className={!showProjects ? 'hidden-projects' : undefined}
+          />
         </span>
         <h2>Projects</h2>
       </div>
 
-      <ul className="sidebar__projects">
-      {showProjects && <Projects />}
-      </ul>
+      <ul className="sidebar__projects">{showProjects && <Projects />}</ul>
 
       {showProjects && <AddProject />}
     </div>

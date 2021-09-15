@@ -1,14 +1,16 @@
 import moment from 'moment';
 import React, { useState } from 'react';
-import { FaCalendarAlt, FaProjectDiagram, FaRegListAlt } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaRegListAlt } from 'react-icons/fa';
 import { useSelectedProjectValue } from '../context';
 import { firebase } from '../firebase';
 import ProjectOverlay from './ProjectOverlay';
 import TaskDate from './TaskDate';
 
-function AddTask({ showAddTaskMain = true, 
+function AddTask({ 
+  showAddTaskMain = true, 
   showShouldMain = false, 
-  showQuickAddTask, setShowQuickAddTask }) {
+  showQuickAddTask, setShowQuickAddTask 
+}) {
 
     const [task, setTask] = useState('');
     const [taskDate, setTaskDate] = useState('');
@@ -54,12 +56,21 @@ function AddTask({ showAddTaskMain = true,
     }
 
   return (
-    <div className={showQuickAddTask ? 'add-task add-task__overlay' : 'add-task'}>
+    <div
+      className={showQuickAddTask ? 'add-task add-task__overlay' : 'add-task'}
+      data-testid="add-task-comp"
+    >
       {showAddTaskMain && (
         <div
           className="add-task__shallow"
           data-testid="show-main-action"
           onClick={() => setShowMain(!showMain)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') setShowMain(!showMain);
+          }}
+          tabIndex={0}
+          aria-label="Add task"
+          role="button"
         >
           <span className="add-task__plus">+</span>
           <span className="add-task__text">Add Task</span>
@@ -67,62 +78,95 @@ function AddTask({ showAddTaskMain = true,
       )}
 
       {(showMain || showQuickAddTask) && (
-        <div className="add-task__main">
+        <div className="add-task__main" data-testid="add-task-main">
           {showQuickAddTask && (
             <>
               <div data-testid="quick-add-task">
                 <h2 className="header">Quick Add Task</h2>
-                <span 
+                <span
                   className="add-task__cancel-x"
                   data-testid="add-task-quick-cancel"
+                  aria-label="Cancel adding task"
                   onClick={() => {
                     setShowMain(false);
                     setShowProjectOverlay(false);
                     setShowQuickAddTask(false);
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setShowMain(false);
+                      setShowProjectOverlay(false);
+                      setShowQuickAddTask(false);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
                 >
                   X
                 </span>
               </div>
             </>
           )}
-          <ProjectOverlay 
-            setProject={setProject} 
-            showProjectOverlay={showProjectOverlay} setShowProjectOverlay={setShowProjectOverlay} />
+          <ProjectOverlay
+            setProject={setProject}
+            showProjectOverlay={showProjectOverlay}
+            setShowProjectOverlay={setShowProjectOverlay}
+          />
           <TaskDate
             setTaskDate={setTaskDate}
             showTaskDate={showTaskDate}
             setShowTaskDate={setShowTaskDate}
           />
           <input
-            type="text"
             className="add-task__content"
+            aria-label="Enter your task"
             data-testid="add-task-content"
-            onChange={e => setTask(e.target.value)}
+            type="text"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
           />
           <button
             type="button"
             className="add-task__submit"
             data-testid="add-task"
-            onClick={() => addTask()}
+            onClick={() =>
+              showQuickAddTask
+                ? addTask() && setShowQuickAddTask(false)
+                : addTask()
+            }
           >
             Add Task
           </button>
           {!showQuickAddTask && (
-            <span 
+            <span
               className="add-task__cancel"
+              data-testid="add-task-main-cancel"
               onClick={() => {
                 setShowMain(false);
                 setShowProjectOverlay(false);
               }}
-              >
-                Cancel
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setShowMain(false);
+                  setShowProjectOverlay(false);
+                }
+              }}
+              aria-label="Cancel adding a task"
+              tabIndex={0}
+              role="button"
+            >
+              Cancel
             </span>
           )}
-          <span 
+          <span
             className="add-task__project"
             data-testid="show-project-overlay"
             onClick={() => setShowProjectOverlay(!showProjectOverlay)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') setShowProjectOverlay(!showProjectOverlay);
+            }}
+            tabIndex={0}
+            role="button"
           >
             <FaRegListAlt />
           </span>
@@ -130,8 +174,13 @@ function AddTask({ showAddTaskMain = true,
             className="add-task__date"
             data-testid="show-task-date-overlay"
             onClick={() => setShowTaskDate(!showTaskDate)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') setShowTaskDate(!showTaskDate);
+            }}
+            tabIndex={0}
+            role="button"
           >
-            <FaCalendarAlt />
+            <FaRegCalendarAlt />
           </span>
         </div>
       )}
